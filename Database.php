@@ -10,6 +10,9 @@
  */
 namespace OctalDev;
 
+/**
+ * class Database
+ */
 class Database
 {
 	/**
@@ -64,14 +67,11 @@ class Database
 	/**
 	 * Security
 	 *
-	 * @param int | string $data data
-	 * @return int | string
+	 * @param string $data data
+	 * @return string
 	 */
-	public function security($data)
+	public function security(string $data)
 	{
-		if( is_null($data) ) return;
-		if( is_array($data) ) return $data;
-		
 		return trim(htmlentities(addslashes($data)));
 	}
 	
@@ -155,101 +155,15 @@ class Database
 	{
 		$name = $this->security($name);
 		
-		$table = new class {
-			
-			public $query;
-			
-			public function security($data)
-			{
-				if( is_null($data) ) return;
-				if( is_array($data) ) return;
-		
-				return trim(htmlentities(addslashes($data)));
-			}
-	
-			public function primary($name)
-			{
-				$name = $this->security($name);
-				if( !strpos($this->query, "PRIMARY KEY") ) $this->query .= "PRIMARY KEY ({$name}),";
-			}
-			
-			public function id()
-			{
-				$this->query .= "id INT NOT NULL AUTO_INCREMENT,";
-				$this->primary("id");
-			}
-			
-			public function int($name, int $max = 11)
-			{
-				$name = $this->security($name);
-				
-				$this->query .= "$name INT($max) NOT NULL,";
-			}
-			
-			public function bigint($name, int $max = 20)
-			{
-				$name = $this->security($name);
-				
-				$this->query .= "$name bigint($max) NOT NULL,";
-			}
-			
-			public function string($name, int $max = 255)
-			{
-				$name = $this->security($name);
-				
-				$this->query .= "$name varchar($max) NOT NULL,";
-			}
-			
-			public function text($name)
-			{
-				$name = $this->security($name);
-				
-				$this->query .= "$name TEXT NOT NULL,";
-			}
-			
-			public function mediumtext($name)
-			{
-				$name = $this->security($name);
-				
-				$this->query .= "$name MEDIUMTEXT NOT NULL,";
-			}
-			
-			public function date($name)
-			{
-				$name = $this->security($name);
-				
-				$this->query .= "$name DATE,";
-			}
-			
-			public function time($name)
-			{
-				$name = $this->security($name);
-				
-				$this->query .= "$name TIME,";
-			}
-			
-			public function datetime($name)
-			{
-				$name = $this->security($name);
-				
-				$this->query .= "$name DATETIME,";
-			}
-			
-			public function timestamp($name, $value)
-			{
-				$name = $this->security($name);
-				$value = $this->security($value);
-				
-				$this->query .= "$name TIMESTAMP($value),";
-			}
-		};
+		$table = new Table();
 		
 		$closure($table);
 		
 		$query = $table->query;
 		$query = substr($query, 0, strlen($query) - 1);
 		
-		$query = "CREATE TABLE IF NOT EXISTS `{$name}`(" . $query . ") default charset = utf8mb4;";
+		$query = "CREATE TABLE IF NOT EXISTS `{$name}`(" . $query . ") ";
+		$query .= "default charset = utf8mb4;";
 		
 		return $this->query($query);
 	}
@@ -579,5 +493,179 @@ class Database
 	{
 		$this->pdo = null;
 		$this->query_builder = null;
+	}
+}
+
+/**
+ * class Table
+ */
+class Table{
+			
+	public $query;
+	
+	/**
+	 * Security
+	 *
+	 * @param string $data data
+	 * @return string
+	 */
+	public function security(string $data)
+	{
+		return trim(htmlentities(addslashes($data)));
+	}
+	
+	/**
+	 * Primary
+	 *
+	 * @param string $name column name
+	 * @return void
+	 */
+	public function primary(string $name)
+	{
+		$name = $this->security($name);
+		if( !strpos($this->query, "PRIMARY KEY") ) $this->query .= "PRIMARY KEY ({$name}),";
+	}
+	
+	/**
+	 * Id
+	 *
+	 * @return void
+	 */
+	public function id()
+	{
+		$this->query .= "id INT NOT NULL AUTO_INCREMENT,";
+		$this->primary("id");
+	}
+	
+	/**
+	 * Int
+	 *
+	 * @param string $name column name
+	 * @param int $max default (11)
+	 *
+	 * @return void
+	 */
+	public function int(string $name, int $max = 11)
+	{
+		$name = $this->security($name);
+
+		$this->query .= "$name INT($max) NOT NULL,";
+	}
+	
+	/**
+	 * Bigint
+	 *
+	 * @param string $name column name
+	 * @param int $max default (11)
+	 *
+	 * @return void
+	 */
+	public function bigInt(string $name, int $max = 20)
+	{
+		$name = $this->security($name);
+
+		$this->query .= "$name bigint($max) NOT NULL,";
+	}
+
+	/**
+	 * String ( varchar )
+	 *
+	 * @param string $name column name
+	 * @param int $max default (255)
+	 *
+	 * @return void
+	 */
+	public function string(string $name, int $max = 255)
+	{
+		$name = $this->security($name);
+
+		$this->query .= "$name varchar($max) NOT NULL,";
+	}
+
+	/**
+	 * Text
+	 *
+	 * @param string $name column name
+	 *
+	 * @return void
+	 */
+	public function text(string $name)
+	{
+		$name = $this->security($name);
+	
+		$this->query .= "$name TEXT NOT NULL,";
+	}
+	
+	/**
+	 * Mediumtext
+	 *
+	 * @param string $name column name
+	 *
+	 * @return void
+	 */
+	 
+	public function mediumText(string $name)
+	{
+		$name = $this->security($name);
+
+		$this->query .= "$name MEDIUMTEXT NOT NULL,";
+	}
+
+	/**
+	 * Date
+	 *
+	 * @param string $name column name
+	 *
+	 * @return void
+	 */
+	public function date(string $name)
+	{
+		$name = $this->security($name);
+
+		$this->query .= "$name DATE,";
+	}
+
+	/**
+	 * Time
+	 *
+	 * @param string $name column name
+	 *
+	 * @return void
+	 */
+	public function time(string $name)
+	{
+		$name = $this->security($name);
+
+		$this->query .= "$name TIME,";
+	}
+
+	/**
+	 * Datetime
+	 *
+	 * @param string $name column name
+	 *
+	 * @return void
+	 */
+	public function dateTime(string $name)
+	{
+		$name = $this->security($name);
+
+		$this->query .= "$name DATETIME,";
+	}
+	
+	/**
+	 * Timestamp
+	 *
+	 * @param string $name column name
+	 * @param string value value
+	 *
+	 * @return void
+	 */
+	public function timestamp(string $name, string $value)
+	{
+		$name = $this->security($name);
+		$value = $this->security($value);
+
+		$this->query .= "$name TIMESTAMP($value),";
 	}
 }
