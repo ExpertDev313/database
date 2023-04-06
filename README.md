@@ -9,7 +9,7 @@ Created by <a href="https://t.me/OctalDev" target="_blank" rel="noopener">Octal 
 To use the ExpertDev313 Database Library, you first need to create a new instance of the `Database` class:
 
 ```php
-use ExpertDev313\Database;
+use OctalDev\Database;
 
 $db = new Database('localhost', 'username', 'password', 'my_database');
 ```
