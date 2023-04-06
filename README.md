@@ -145,7 +145,7 @@ $backup_name = $db->backup("*", "backup_path/");
 // or $backup_name = $db->backup("table1,table2,table3", "backup_path/");
 // or $backup_name = $db->backup(["table1", "table2", "table3"], "backup_path/");
 
-# If backup_path not exists backup method will be create backup_path
+# If backup_path not exists backup method will create backup_path
 ```
 
 for restore your data from your backup :
