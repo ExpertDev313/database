@@ -1,4 +1,4 @@
-# ExpertDev313 Database Library, a query builder and professional dbms
+# ExpertDev313 Database, a professional DBMS
 
 Created by <a href="https://t.me/OctalDev" target="_blank" rel="noopener">Octal Developer</a>
 
