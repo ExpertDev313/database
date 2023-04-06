@@ -128,9 +128,10 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 /** Or you can use this code **/
 
-/**
+/*
 $stmt = $users->select(["name", "phone"])->find1()->excute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+*/
 ```
 
 ## Backup and restore backup
