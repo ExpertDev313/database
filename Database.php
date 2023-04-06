@@ -1,7 +1,7 @@
 <?php
 
 /**
- * In the name of Allah
+ * Database class
  *
  * Hoping the appearance Promised Savior
  *
