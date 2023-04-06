@@ -178,7 +178,7 @@ class Database
 	public function showCreateTable(string $table)
 	{
 		$stmt = $this->query("SHOW CREATE TABLE test");
-		$row = $stmt->fetch(PDO::FETCH_NUM);
+		$row = $stmt->fetch(\PDO::FETCH_NUM);
 		
 		return $row[1];
 	}
@@ -278,7 +278,7 @@ class Database
 		
 		$stmt = $this->query("DESCRIBE `{$table}`;");
 		
-		return $stmt->fetchAll(PDO::FETCH_COLUMN);
+		return $stmt->fetchAll(\PDO::FETCH_COLUMN);
 	}
 	
 	/**
@@ -390,7 +390,7 @@ class Database
 		$stmt = $this->query($query);
 		
 		$tables = [];
-		$tablesArray = $stmt->fetchAll(PDO::FETCH_NUM);
+		$tablesArray = $stmt->fetchAll(\PDO::FETCH_NUM);
 		
 		foreach( $tablesArray as $table ) {
 			$tables[] = $table[0];
@@ -439,12 +439,12 @@ class Database
 			$numColumns = $result->columnCount();
 			
 			$result2 = $this->query("SHOW CREATE TABLE $table");
-			$row2 = $result2->fetch(PDO::FETCH_NUM);
+			$row2 = $result2->fetch(\PDO::FETCH_NUM);
 
 			$sql .= "\n\n" . $row2[1] . ";\n\n";
 
 			for( $i = 0; $i < $numColumns; $i++ ) {
-				while( $row = $result->fetch(PDO::FETCH_NUM) ){
+				while( $row = $result->fetch(\PDO::FETCH_NUM) ){
 					$sql .= "INSERT INTO $table VALUES(";
 					for($j=0; $j < $numColumns; $j++){
 						$row[$j] = addslashes($row[$j]);
@@ -491,8 +491,7 @@ class Database
 	 */
 	public function close()
 	{
-		$this->pdo = null;
-		$this->query_builder = null;
+		unset($this->query_builder, $this->pdo);
 	}
 }
 
