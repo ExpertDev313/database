@@ -37,7 +37,7 @@ class Database
 	{
 		
 		try {
-			$this->pdo = new PDO("mysql:dbname={$name};host={$host};charset=utf8", $user, $pass);
+			$this->pdo = new \PDO("mysql:dbname={$name};host={$host};charset=utf8", $user, $pass);
 			$this->pdo->exec("SET NAMES 'utf8';");
 		} catch ( PDOException $e ) {
 			throw new Exception($e->getMessage());
