@@ -123,7 +123,7 @@ and for get data from table you can use this code:
 
 ```php
 
-$stmt = $users->select()->find(1)->execute() # Find By Id | Select *;
+$stmt = $users->select()->find(1)->execute(); # Find By Id | Select *;
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 /** Or you can use this code **/
